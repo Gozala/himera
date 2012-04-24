@@ -59,13 +59,18 @@ remove this notice, or any other, from this software.
         <h4>Define a library</h4>
         <div class="cheat-box-container eight columns">
             <div class="cheat-box">
-                <pre class="brush: js">// No native implementation</pre>
+                <pre class="brush: js">// No native implementation in JS
+// In node.js you write modules
+// To expose you need to put into exports
+exports.foo = function(bar) { return doSomethingWith(bar) }</pre>
             </div>
         </div>
 
         <div class="cheat-box-container eight columns">
             <div class="cheat-box">
-                <pre class="brush: clojure">(ns my.library)</pre>
+                <pre class="brush: clojure">(ns my.library)
+;; To expose you need to add :export metadata
+(defn ^:export foo [bar] (do-something-with bar)</pre>
             </div>
         </div>
     </div>
@@ -74,7 +79,9 @@ remove this notice, or any other, from this software.
         <h4>Use a library</h4>
         <div class="cheat-box-container eight columns">
             <div class="cheat-box">
-                <pre class="brush: js">// No native implementation</pre>
+                <pre class="brush: js">// No native implementation
+// In node.js you require modules
+var other = require('other/library')</pre>
             </div>
         </div>
 
@@ -663,6 +670,7 @@ if (zero) {
                             <pre class="brush: js">
 // == operator is coercive
 1 == "1" // => true
+1 === "1" // => false
 
 // sometimes based on value
 {} == {} // => false</pre>
@@ -1180,8 +1188,12 @@ Dog.prototype.sound = function() {
   return "Woof!";
 }
 
-// lacking indirection no way to provide defaults
-(1).sound() // Error
+// You can provide defaults but it's risky as
+// you share same namespace and may have conflicts.
+Object.prototype.sound = function() {
+  return "... silence ..."
+}
+(1).sound() // "... silence ..."
 </pre>
             </div>
         </div>
